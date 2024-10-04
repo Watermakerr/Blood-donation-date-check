@@ -7,12 +7,6 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
 
-    <meta name="description" content="Trang web kiểm tra điều kiện hiến máu của bạn. Nhập ngày hiến máu cuối cùng để biết bạn có đủ điều kiện hiến máu hay không.">
-    <meta name="keywords" content="hiến máu, kiểm tra điều kiện hiến máu, sức khỏe, y tế">
-    <meta property="og:title" content="Kiểm tra điều kiện hiến máu">
-    <meta property="og:description" content="Trang web kiểm tra điều kiện hiến máu của bạn. Nhập ngày hiến máu cuối cùng để biết bạn có đủ điều kiện hiến máu hay không.">
-    <meta property="og:type" content="website">
-
 </head>
 <body class="bg-light d-flex justify-content-center align-items-center vh-100">
     <div class="container bg-white p-4 rounded shadow">
@@ -53,12 +47,23 @@
             const minimumDays = 84;
             let resultMessage = '';
 
+            const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+            const months = ['tháng 1', 'tháng 2', 'tháng 3', 'tháng 4', 'tháng 5', 'tháng 6', 'tháng 7', 'tháng 8', 'tháng 9', 'tháng 10', 'tháng 11', 'tháng 12'];
+
+            function formatDate(date) {
+                const dayName = days[date.getDay()];
+                const day = date.getDate();
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                return `${dayName}, ngày ${day} ${month}, ${year}`;
+            }
+
             if (daysDifference >= minimumDays) {
                 resultMessage = `Bạn đủ điều kiện để hiến máu. Lần hiến máu trước là từ ${daysDifference} ngày trước.`;
             } else {
                 const eligibleDate = new Date(lastDonationDate);
                 eligibleDate.setDate(eligibleDate.getDate() + minimumDays);
-                resultMessage = `Bạn chưa đủ điều kiện để hiến máu. Lần hiến máu trước là từ ${daysDifference} ngày trước. Bạn có thể hiến máu vào ngày ${eligibleDate.toDateString()}.`;
+                resultMessage = `Bạn chưa đủ điều kiện để hiến máu. Lần hiến máu trước là từ ${daysDifference} ngày trước. Bạn có thể hiến máu vào ${formatDate(eligibleDate)}.`;
             }
 
             document.getElementById('resultMessage').innerText = resultMessage;
